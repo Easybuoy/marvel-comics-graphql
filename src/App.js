@@ -1,10 +1,12 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
+import CharacterWithHOC from "./CharacterWithHOC";
 
 function App() {
   return (
     <div className="App">
-      <h2>Hello Graphql</h2>
+      <h1>Characters</h1>
+      <CharacterWithHOC />
     </div>
   );
 }
