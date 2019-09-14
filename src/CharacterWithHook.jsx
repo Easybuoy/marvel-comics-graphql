@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { gql } from "apollo-boost";
-import { withApollo } from "react-apollo";
+import { useQuery } from "react-apollo";
 
 const GET_CHARACTERS = gql`
   query getCharacters {
@@ -13,51 +13,33 @@ const GET_CHARACTERS = gql`
   }
 `;
 
-function CharacterWithHOC({ client }) {
-  const [characters, setCharacters] = useState([]);
+function CharacterWithHOC() {
+  const { loading, error, data } = useQuery(GET_CHARACTERS);
+  if (error) {
+    return <div>Error</div>;
+  }
 
-  client
-    .query({ query: GET_CHARACTERS })
-    .then(res => setCharacters(res.data.characters))
-    .catch(err => console.log(err));
-
-  if (characters.length > 0) {
+  if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          margin: "0rem auto"
-        }}
-      >
-        {characters.map(character => (
-          <div
-            key={character.name}
-            style={{
-              display: "flex",
-              width: "30%",
-              flexWrap: "wrap",
-              margin: "1rem 0",
-              justifyContent: "center"
-            }}
-          >
-            <img
-              src={character.thumbnail}
-              alt={character.name}
-              style={{ width: "300px" }}
-            />
-          </div>
-        ))}
+      <div className="App">
+        <h2>Loading...</h2>
       </div>
     );
   }
-  return (
-    <div className="App">
-      <h2>Loading...</h2>
-    </div>
-  );
+  if (data) {
+    if (data.characters.length > 0) {
+      return (
+        <div className="characters">
+          {data.characters.map(character => (
+            <div key={character.name} className="character">
+              <img src={character.thumbnail} alt={character.name} />
+              <p>{character.name}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+  }
 }
 
-export default withApollo(CharacterWithHOC);
+export default CharacterWithHOC;

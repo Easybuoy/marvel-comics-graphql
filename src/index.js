@@ -5,11 +5,11 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import ApolloClient from "apollo-boost";
 // import { ApolloProvider } from '@apollo/react-hooks';
-import {ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from "react-apollo";
 
 const client = new ApolloClient({
-    uri: 'https://api.marvelql.com/',
-  });
+  uri: "https://api.marvelql.com/"
+});
 
 ReactDOM.render(
   <ApolloProvider client={client}>
